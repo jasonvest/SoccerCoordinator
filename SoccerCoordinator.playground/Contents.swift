@@ -21,8 +21,10 @@ let players: [[String: String]] =
      ["name": "Les Clay", "height": "42", "experience": "yes", "guardian": "Wynonna Brown"],
      ["name": "Herschel Krustofski", "height": "45", "experience": "yes", "guardian": "Hyman and Rachel Krustofski"],
 ]
-
-var soccerTeams: [String: [[String: String]]] = ["Dragons": [], "Sharks": [], "Raptors": []]
+var soccerTeams: [String] = ["Dragons", "Sharks", "Raptors"]
+var teamDragons: [[String: String]] = []
+var teamSharks: [[String: String]] = []
+var teamRaptors: [[String: String]] = []
 var letters: [[String: String]]
 
 //Function to sort and assign players based on experience
@@ -50,19 +52,20 @@ func sortAndAssignPlayers() -> Void   {
     assignGroups(ofPlayers: experienceNo)
 }
 
-//Function to send letters to the players for each team
-func sendLetters(toTeams teams: [String: [[String: String]]])  -> Void  {
-    for (team, members) in teams   {
+//Function to send customized letters to the players for each team
+func sendLetters(toTeams teams: [String])  -> Void  {
+    for team in teams {
         var practiceTime = ""
-        switch team {
-        case "Dragons":
+        var members: [[String: String]] = []
+        if team == "Dragons"    {
             practiceTime = "March 17, 1pm"
-        case "Sharks":
+            members = teamDragons
+        } else if team == "Sharks"  {
             practiceTime = "March 17, 3pm"
-        case "Raptors":
+            members = teamSharks
+        } else if team == "Raptors" {
             practiceTime = "March 18, 1pm"
-        default:
-            practiceTime = "n/a"
+            members = teamRaptors
         }
         for member in members {
             if member["guardian"] != nil && member["name"] != nil   {
@@ -76,28 +79,35 @@ func assignGroups(ofPlayers players: [[String: String]]) -> Void {
     var lastTeamAssigned = ""
     while index < players.count {
         if lastTeamAssigned == "" {
-            soccerTeams["Dragons"]?.append(players[index])
+            teamDragons.append(players[index])
             lastTeamAssigned = "Dragons"
             index += 1
             continue
         } else if lastTeamAssigned == "Dragons" {
-            soccerTeams["Sharks"]?.append(players[index])
+            teamSharks.append(players[index])
             lastTeamAssigned = "Sharks"
             index += 1
             continue
         } else if lastTeamAssigned == "Sharks"   {
-            soccerTeams["Raptors"]?.append(players[index])
+            teamRaptors.append(players[index])
             lastTeamAssigned = ""
             index += 1
             continue
         }
     }
 }
-func calculateAverageHeight(ofTeams teams: [String: [[String: String]]])    {
-    for (team, members) in teams    {
+func calculateAverageHeight(ofTeams teams: [String])    {
+    for team in teams {
         var teamTotalHeight: Double = 0.0
         var teamAverageHeight: Double = 0.0
-
+        var members: [[String: String]] = []
+        if team == "Dragons"    {
+            members = teamDragons
+        } else if team == "Sharks"  {
+            members = teamSharks
+        } else if team == "Raptors" {
+            members = teamRaptors
+        }
         for member in members   {
             if let height = Double(member["height"]!)    {
                 teamTotalHeight = teamTotalHeight + height
