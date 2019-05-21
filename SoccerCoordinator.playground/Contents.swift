@@ -39,9 +39,11 @@ func sortAndAssignPlayers() -> Void   {
         }
     }
     //Sort groups by height
-    //Researched on StackOverflow on how to use the sort function for an array of dictionaries
-    experienceYes.sort(by: {($0["height"] as! String) > $1["height"] as! String})
-    experienceNo.sort(by: {($0["height"] as! String) < $1["height"] as! String})
+    /* Researched on StackOverflow on how to use the sort function for an array of dictionaries
+       Specifically, the {($0["height"]! as String) < $1["height"]! as String} part.
+    */
+    experienceYes.sort(by: {($0["height"]! as String) > $1["height"]! as String})
+    experienceNo.sort(by: {($0["height"]! as String) < $1["height"]! as String})
 
     //Assign players evenly over the teams
     assignGroups(ofPlayers: experienceYes)
@@ -63,7 +65,9 @@ func sendLetters(toTeams teams: [String: [[String: String]]])  -> Void  {
             practiceTime = "n/a"
         }
         for member in members {
-            print("Dear \(member["guardian"]!),\r\n\r\n We hope you're as excited as we are that \(member["name"]!) will be playing for the \(team) this year!\r\n\r\nThe practice time for your team is: \(practiceTime)\r\n\r\nRemember, have fun!\r\n\r\n\r\nSincerely,\r\nJason A. Vest\r\n\r\n")
+            if member["guardian"] != nil && member["name"] != nil   {
+                print("Dear \(member["guardian"]!),\r\n\r\nWe hope you're as excited as we are that \(member["name"]!) will be playing for the \(team) this year!\r\n\r\nThe practice time for your team is: \(practiceTime)\r\n\r\nRemember, have fun!\r\n\r\n\r\nSincerely,\r\nJason A. Vest\r\n\r\n")
+            }
         }
     }
 }
