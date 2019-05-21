@@ -21,14 +21,16 @@ let players: [[String: String]] =
      ["name": "Les Clay", "height": "42", "experience": "yes", "guardian": "Wynonna Brown"],
      ["name": "Herschel Krustofski", "height": "45", "experience": "yes", "guardian": "Hyman and Rachel Krustofski"],
 ]
-//var soccerTeams: [String: [String]] = ["Dragons": [], "Sharks": [], "Raptors": []]
+
 var soccerTeams: [String: [[String: String]]] = ["Dragons": [], "Sharks": [], "Raptors": []]
 var letters: [[String: String]]
-//Function to sort and assign players based on experience
 
+//Function to sort and assign players based on experience
 func sortAndAssignPlayers() -> Void   {
     var experienceYes: [[String: String]] = []
     var experienceNo: [[String: String]] = []
+    
+    //Divide players into experienced and unexperienced groups
     for player in players {
         if player["experience"] == "yes"    {
             experienceYes.append(player)
@@ -36,48 +38,17 @@ func sortAndAssignPlayers() -> Void   {
             experienceNo.append(player)
         }
     }
-    var indexExp = 0
-    var lastTeamAssignedExperienced = ""
-    while indexExp < experienceYes.count {
-        if lastTeamAssignedExperienced == "" {
-            soccerTeams["Dragons"]?.append(experienceYes[indexExp])
-            lastTeamAssignedExperienced = "Dragons"
-            indexExp += 1
-            continue
-        } else if lastTeamAssignedExperienced == "Dragons" {
-            soccerTeams["Sharks"]?.append(experienceYes[indexExp])
-            lastTeamAssignedExperienced = "Sharks"
-            indexExp += 1
-            continue
-        } else if lastTeamAssignedExperienced == "Sharks"   {
-            soccerTeams["Raptors"]?.append(experienceYes[indexExp])
-            lastTeamAssignedExperienced = ""
-            indexExp += 1
-            continue
-        }
-    }
-    var indexNotExp = 0
-    var lastTeamAssignedNotExperienced = ""
-    while indexNotExp < experienceNo.count {
-        if lastTeamAssignedNotExperienced == "" {
-            soccerTeams["Dragons"]?.append(experienceYes[indexNotExp])
-            lastTeamAssignedNotExperienced = "Dragons"
-            indexNotExp += 1
-            continue
-        } else if lastTeamAssignedNotExperienced == "Dragons" {
-            soccerTeams["Sharks"]?.append(experienceYes[indexNotExp])
-            lastTeamAssignedNotExperienced = "Sharks"
-            indexNotExp += 1
-            continue
-        } else if lastTeamAssignedNotExperienced == "Sharks"   {
-            soccerTeams["Raptors"]?.append(experienceYes[indexNotExp])
-            lastTeamAssignedNotExperienced = ""
-            indexNotExp += 1
-            continue
-        }
-    }
+    //Sort groups by height
+    //Researched on StackOverflow on how to use the sort function for an array of dictionaries
+    experienceYes.sort(by: {($0["height"] as! String) > $1["height"] as! String})
+    experienceNo.sort(by: {($0["height"] as! String) < $1["height"] as! String})
+
+    //Assign players evenly over the teams
+    assignGroups(ofPlayers: experienceYes)
+    assignGroups(ofPlayers: experienceNo)
 }
 
+//Function to send letters to the players for each team
 func sendLetters(toTeams teams: [String: [[String: String]]])  -> Void  {
     for (team, members) in teams   {
         var practiceTime = ""
@@ -96,8 +67,28 @@ func sendLetters(toTeams teams: [String: [[String: String]]])  -> Void  {
         }
     }
 }
-
-
+func assignGroups(ofPlayers players: [[String: String]]) -> Void {
+    var index = 0
+    var lastTeamAssigned = ""
+    while index < players.count {
+        if lastTeamAssigned == "" {
+            soccerTeams["Dragons"]?.append(players[index])
+            lastTeamAssigned = "Dragons"
+            index += 1
+            continue
+        } else if lastTeamAssigned == "Dragons" {
+            soccerTeams["Sharks"]?.append(players[index])
+            lastTeamAssigned = "Sharks"
+            index += 1
+            continue
+        } else if lastTeamAssigned == "Sharks"   {
+            soccerTeams["Raptors"]?.append(players[index])
+            lastTeamAssigned = ""
+            index += 1
+            continue
+        }
+    }
+}
 sortAndAssignPlayers()
 sendLetters(toTeams: soccerTeams)
 
