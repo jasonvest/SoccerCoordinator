@@ -22,41 +22,35 @@ let players: [[String: String]] =
      ["name": "Herschel Krustofski", "height": "45", "experience": "yes", "guardian": "Hyman and Rachel Krustofski"],
 ]
 //var soccerTeams: [String: [String]] = ["Dragons": [], "Sharks": [], "Raptors": []]
-var dragonsTeam: [String] = []
-var sharksTeam: [String] = []
-var raptorsTeam: [String] = []
-
+var soccerTeams: [String: [[String: String]]] = ["Dragons": [], "Sharks": [], "Raptors": []]
+var letters: [[String: String]]
 //Function to sort and assign players based on experience
 
 func sortAndAssignPlayers() -> Void   {
-    var experienceYes: [String] = []
-    var experienceNo: [String] = []
+    var experienceYes: [[String: String]] = []
+    var experienceNo: [[String: String]] = []
     for player in players {
-        if player["experience"] == "yes"  {
-            if let name = player["name"]    {
-                experienceYes.append(name)
-            }
+        if player["experience"] == "yes"    {
+            experienceYes.append(player)
         } else if player["experience"] == "no"  {
-            if let name = player["name"]    {
-                experienceNo.append(name)
-            }
+            experienceNo.append(player)
         }
     }
     var indexExp = 0
     var lastTeamAssignedExperienced = ""
     while indexExp < experienceYes.count {
         if lastTeamAssignedExperienced == "" {
-            dragonsTeam.append(experienceYes[indexExp])
+            soccerTeams["Dragons"]?.append(experienceYes[indexExp])
             lastTeamAssignedExperienced = "Dragons"
             indexExp += 1
             continue
         } else if lastTeamAssignedExperienced == "Dragons" {
-            sharksTeam.append(experienceYes[indexExp])
+            soccerTeams["Sharks"]?.append(experienceYes[indexExp])
             lastTeamAssignedExperienced = "Sharks"
             indexExp += 1
             continue
         } else if lastTeamAssignedExperienced == "Sharks"   {
-            raptorsTeam.append(experienceYes[indexExp])
+            soccerTeams["Raptors"]?.append(experienceYes[indexExp])
             lastTeamAssignedExperienced = ""
             indexExp += 1
             continue
@@ -66,26 +60,44 @@ func sortAndAssignPlayers() -> Void   {
     var lastTeamAssignedNotExperienced = ""
     while indexNotExp < experienceNo.count {
         if lastTeamAssignedNotExperienced == "" {
-            dragonsTeam.append(experienceNo[indexNotExp])
+            soccerTeams["Dragons"]?.append(experienceYes[indexNotExp])
             lastTeamAssignedNotExperienced = "Dragons"
             indexNotExp += 1
             continue
         } else if lastTeamAssignedNotExperienced == "Dragons" {
-            sharksTeam.append(experienceNo[indexNotExp])
+            soccerTeams["Sharks"]?.append(experienceYes[indexNotExp])
             lastTeamAssignedNotExperienced = "Sharks"
             indexNotExp += 1
             continue
         } else if lastTeamAssignedNotExperienced == "Sharks"   {
-            raptorsTeam.append(experienceNo[indexNotExp])
+            soccerTeams["Raptors"]?.append(experienceYes[indexNotExp])
             lastTeamAssignedNotExperienced = ""
             indexNotExp += 1
             continue
         }
     }
 }
-sortAndAssignPlayers()
 
-print(raptorsTeam)
-print(sharksTeam)
-print(dragonsTeam)
+func sendLetters(toTeams teams: [String: [[String: String]]])  -> Void  {
+    for (team, members) in teams   {
+        var practiceTime = ""
+        switch team {
+        case "Dragons":
+            practiceTime = "March 17, 1pm"
+        case "Sharks":
+            practiceTime = "March 17, 3pm"
+        case "Raptors":
+            practiceTime = "March 18, 1pm"
+        default:
+            practiceTime = "n/a"
+        }
+        for member in members {
+            print("Dear \(member["guardian"]!),\r\n\r\n We hope you're as excited as we are that \(member["name"]!) will be playing for the \(team) this year!\r\n\r\nThe practice time for your team is: \(practiceTime)\r\n\r\nRemember, have fun!\r\n\r\n\r\nSincerely,\r\nJason A. Vest\r\n\r\n")
+        }
+    }
+}
+
+
+sortAndAssignPlayers()
+sendLetters(toTeams: soccerTeams)
 
