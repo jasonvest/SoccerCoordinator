@@ -93,6 +93,21 @@ func assignGroups(ofPlayers players: [[String: String]]) -> Void {
         }
     }
 }
+func calculateAverageHeight(ofTeams teams: [String: [[String: String]]])    {
+    for (team, members) in teams    {
+        var teamTotalHeight: Double = 0.0
+        var teamAverageHeight: Double = 0.0
+
+        for member in members   {
+            if let height = Double(member["height"]!)    {
+                teamTotalHeight = teamTotalHeight + height
+            }
+        }
+        teamAverageHeight = teamTotalHeight/Double(members.count)
+        print("\(team) avergage height: \(teamAverageHeight) \(teamTotalHeight) \(members.count)")
+    }
+}
 sortAndAssignPlayers()
 sendLetters(toTeams: soccerTeams)
+calculateAverageHeight(ofTeams: soccerTeams)
 
