@@ -53,7 +53,9 @@ func sortAndAssignPlayers() -> Void   {
 }
 
 //Function to send customized letters to the players for each team
-func sendLetters(toTeams teams: [String])  -> Void  {
+func createLetters(forTeams teams: [String])  -> [[String: String]]  {
+    var results: [[String: String]] = []
+    var letter: String = ""
     for team in teams {
         var practiceTime = ""
         var members: [[String: String]] = []
@@ -69,10 +71,12 @@ func sendLetters(toTeams teams: [String])  -> Void  {
         }
         for member in members {
             if member["guardian"] != nil && member["name"] != nil   {
-                print("Dear \(member["guardian"]!),\r\n\r\nWe hope you're as excited as we are that \(member["name"]!) will be playing for the \(team) this year!\r\n\r\nThe practice time for your team is: \(practiceTime)\r\n\r\nRemember, have fun!\r\n\r\n\r\nSincerely,\r\nJason A. Vest\r\n\r\n")
+                letter = "Dear \(member["guardian"]!),\r\n\r\nWe hope you're as excited as we are that \(member["name"]!) will be playing for the \(team) this year!\r\n\r\nThe practice time for your team is: \(practiceTime)\r\n\r\nRemember, have fun!\r\n\r\n\r\nSincerely,\r\nJason A. Vest\r\n\r\n"
+                results.append([member["name"]!: letter])
             }
         }
     }
+    return results
 }
 //Function to evenly divide the players among the teams.
 func assignGroups(ofPlayers players: [[String: String]]) -> Void {
@@ -119,7 +123,16 @@ func calculateAverageHeight(ofTeams teams: [String])    {
         print("\(team) avergage height: \(teamAverageHeight)")
     }
 }
+func sendLetters(toGaurdians letters: [[String: String]]) -> Void   {
+    for letter in letters {
+        for (_, value) in letter  {
+            print(value)
+        }
+    }
+}
 sortAndAssignPlayers()
-sendLetters(toTeams: soccerTeams)
+letters = createLetters(forTeams: soccerTeams)
+sendLetters(toGaurdians: letters)
 calculateAverageHeight(ofTeams: soccerTeams)
+
 
