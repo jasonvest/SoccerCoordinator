@@ -123,6 +123,7 @@ func calculateAverageHeight(ofTeams teams: [String])    {
         print("\(team) avergage height: \(teamAverageHeight)")
     }
 }
+//Send letters to the guardians of the team members
 func sendLetters(toGaurdians letters: [[String: String]]) -> Void   {
     for letter in letters {
         for (_, value) in letter  {
