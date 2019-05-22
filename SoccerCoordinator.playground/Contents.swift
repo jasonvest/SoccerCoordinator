@@ -25,7 +25,7 @@ var soccerTeams: [String] = ["Dragons", "Sharks", "Raptors"]
 var teamDragons: [[String: String]] = []
 var teamSharks: [[String: String]] = []
 var teamRaptors: [[String: String]] = []
-var letters: [[String: String]]
+var letters: [[String: String]] = []
 
 //Function to sort and assign players based on experience
 func sortAndAssignPlayers() -> Void   {
